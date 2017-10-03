@@ -1,9 +1,11 @@
 class Quote < ApplicationRecord
   def next_id
-    raise "Oops, implement me!"
+    # (self.id)+1
+    self.class.where('id > ?', self.id).pluck(:id).first
   end
 
   def previous_id
-    raise "Oops, implement me!"
+    # (self.id)-1
+    self.class.where('id < ?', self.id).pluck(:id).last
   end
 end

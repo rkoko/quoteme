@@ -81,7 +81,7 @@ class QuotesDisplay extends React.Component {
             </Link>
           </div>
         }
-      </div >
+      </div>
     )
   }
 }
