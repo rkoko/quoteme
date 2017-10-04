@@ -10,6 +10,7 @@ const App = (props) => (
         startingQuoteId={props.startingQuoteId}
         render={(routeProps) => <QuotesDisplay {...props} {...routeProps} />}
       />
+
     </div>
   </Router>
 )

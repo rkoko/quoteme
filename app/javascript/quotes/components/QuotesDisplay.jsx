@@ -11,7 +11,10 @@ class QuotesDisplay extends React.Component {
     super()
     this.state = {
       quote: {},
-      fireRedirect: false
+      fireRedirect: false,
+      textInput: '',
+      authorInput: '',
+      modalIsOpen: false
     }
   }
 
@@ -24,6 +27,31 @@ class QuotesDisplay extends React.Component {
         console.error(error)
         this.setState({ fireRedirect: true })
       })
+  }
+
+  toggleModal = () => {
+    this.setState({
+      modalIsOpen: !this.state.modalIsOpen
+    })
+  }
+
+  handleChange = (event) => {
+    const name = event.target.name
+    const value = event.target.value
+    this.setState({
+      [name]: value
+      })
+  }
+
+  handleSubmit = (event) =>{
+    event.preventDefault()
+    axios.post(`api/quotes`, {
+      text: this.state.textInput,
+      author: this.state.authorInput
+    })
+    .then(() => {
+      this.setState({textInput: '', authorInput: '', modalIsOpen: false})
+    })
   }
 
   setQuoteIdFromQueryString(qs) {
@@ -63,15 +91,46 @@ class QuotesDisplay extends React.Component {
           <QuotesBody quote={this.state.quote} />
 
           {nextQuoteId != null ? <QuoteNavigation direction='next' otherQuoteId={nextQuoteId} /> : null}
-
-
         </div>
+
+        <div className='form-container'>
+
+        {!this.state.modalIsOpen ?
+          <button onClick={this.toggleModal}>Submit a quote</button> :
+          null}
+
+        {this.state.modalIsOpen ?
+          <div className='form'>
+            <form onSubmit={this.handleSubmit}>
+              <label>Text: </label>
+              <input
+                required
+                type="text"
+                name="textInput"
+                value={this.state.textInput}
+                onChange={this.handleChange}
+              />
+              <label>Author: </label>
+              <input
+                required
+                type="text"
+                name="authorInput"
+                value={this.state.authorInput}
+                onChange={this.handleChange}
+              />
+              <button type="submit" >Add Quote</button>
+            </form>
+          </div> :
+          null}
+        </div>
+
         {this.state.quote.id !== parseInt(this.props.startingQuoteId, 10) &&
           <div id='footer'>
             <Link className='btn btn-primary' to={`/?quote=${this.props.startingQuoteId}`}>
               Back to Beginning
             </Link>
           </div>
+
         }
       </div>
     )
