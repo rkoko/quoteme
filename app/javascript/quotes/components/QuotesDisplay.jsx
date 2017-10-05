@@ -14,7 +14,8 @@ class QuotesDisplay extends React.Component {
       fireRedirect: false,
       textInput: '',
       authorInput: '',
-      modalIsOpen: false
+      modalIsOpen: false,
+      submittedQuote: {}
     }
   }
 
@@ -49,8 +50,16 @@ class QuotesDisplay extends React.Component {
       text: this.state.textInput,
       author: this.state.authorInput
     })
+    .then((res) => {
+      this.setState({
+        textInput: '',
+        authorInput: '',
+        modalIsOpen: false,
+        submittedQuote: res.data
+      })
+    })
     .then(() => {
-      this.setState({textInput: '', authorInput: '', modalIsOpen: false})
+      this.props.history.push(`/?quote=${this.state.submittedQuote.id}`)
     })
   }
 
@@ -77,9 +86,9 @@ class QuotesDisplay extends React.Component {
   }
 
   render() {
-    const quote = this.state.quote
-    const nextQuoteId = quote.next_id
-    const previousQuoteId = quote.previous_id
+      const quote = this.state.quote
+      const nextQuoteId = quote.next_id
+      const previousQuoteId = quote.previous_id
     return (
       <div>
         <div className='quote-container'>
