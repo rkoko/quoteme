@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import axios from 'axios';
 import QuoteNavigation from './QuoteNavigation';
-import QuotesBody from './QuotesBody'
+import QuotesBody from './QuotesBody';
+import QuoteFooter from './QuoteFooter'
 
 class QuotesDisplay extends React.Component {
   constructor() {
@@ -134,12 +135,7 @@ class QuotesDisplay extends React.Component {
         </div>
 
         {this.state.quote.id !== parseInt(this.props.startingQuoteId, 10) &&
-          <div id='footer'>
-            <Link className='btn btn-primary' to={`/?quote=${this.props.startingQuoteId}`}>
-              Back to Beginning
-            </Link>
-          </div>
-
+          <QuoteFooter startingQuoteId = {this.props.startingQuoteId}/>
         }
       </div>
     )

@@ -1,13 +1,12 @@
 class Api::QuotesController < ApplicationController
   skip_before_action :verify_authenticity_token
-  
+
   def show
     @quote = Quote.find(params[:id])
   end
 
   def create
-  quote = Quote.create(quote_params)
-  quote.save
+  quote = Quote.new(quote_params)
     if quote.save
       render json: quote
     else
